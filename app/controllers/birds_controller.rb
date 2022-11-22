@@ -1,5 +1,4 @@
 class BirdsController < ApplicationController
-
   # GET /birds
   def index
     birds = Bird.all
@@ -12,8 +11,19 @@ class BirdsController < ApplicationController
     if bird
       render json: bird
     else
-      render json: { error: "Bird not found" }, status: :not_found
+      render json: { error: 'Bird not found' }, status: :not_found
     end
   end
 
+  # POST /birds
+  def create
+    bird = Bird.create(project_params)
+    render json: bird, status: :created
+  end
+
+  private
+  # Only allow a list of trusted parameters
+  def project_params
+    params.permit(:name, :species)
+  end
 end
